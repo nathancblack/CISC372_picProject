@@ -83,12 +83,13 @@ void* threadConvolute(void* arg){
 //            algorithm: The kernel matrix to use for the convolution
 //Returns: Nothing
 void convolute(Image* srcImage,Image* destImage,Matrix algorithm){
+    int i;
     pthread_t threads[NUM_THREADS];
     ThreadData threadData[NUM_THREADS];
     int rowsPerThread=srcImage->height/NUM_THREADS;
     int extraRows=srcImage->height%NUM_THREADS;
 
-    for (int i=0;i<NUM_THREADS;i++){
+    for (i=0;i<NUM_THREADS;i++){
         threadData[i].srcImage=srcImage;
         threadData[i].destImage=destImage;
         threadData[i].algorithm=algorithm;
@@ -97,7 +98,7 @@ void convolute(Image* srcImage,Image* destImage,Matrix algorithm){
         pthread_create(&threads[i],NULL,threadConvolute,&threadData[i]);
     }
 
-    for (int i=0;i<NUM_THREADS;i++){
+    for (i=0;i<NUM_THREADS;i++){
         pthread_join(threads[i],NULL);
     }
 }
